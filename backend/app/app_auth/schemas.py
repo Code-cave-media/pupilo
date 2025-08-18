@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr
-
-
+from pydantic import BaseModel
+from app_subscription.schemas import SubscriptionResponse
+from app_dog.schemas import DogResponse
 class GoogleLoginRequest(BaseModel):
   token : str
 
@@ -11,9 +11,9 @@ class LoginRequest(BaseModel):
 class UserResponse(BaseModel):
   email : str
   assistant_personality : str
-  subscription_status : None | str = None
+  subscription : SubscriptionResponse | None 
   id : str
-  dog : any| None =None
+  dog : DogResponse | None
 
 class LoginResponse(BaseModel):
   token : str

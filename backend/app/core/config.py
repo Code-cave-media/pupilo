@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID:str
     RESEND_FROM_ADDRESS:str
     RESEND_API_KEY : str
+    STRIPE_SECRET_KEY: str
+    STRIPE_PRICE_ID:str
+    STRIPE_WEBHOOK_SECRET : str
     class Config:
         env_file = ".env"
 

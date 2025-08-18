@@ -9,7 +9,7 @@ from sqlalchemy import Column, String, SmallInteger, ForeignKey
 class Dog(Base, CreatedUpdatedAtMixin, IDMixin):
     __tablename__ = "dogs"
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, unique=True)  
     name = Column(String(100), nullable=False)
     age = Column(SmallInteger)
     breed = Column(String(100))

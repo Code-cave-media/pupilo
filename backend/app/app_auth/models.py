@@ -10,13 +10,18 @@ class User(Base,CreatedUpdatedAtMixin):
   email = Column(String,unique=True)
   password  = Column(String,nullable=True)
   assistant_personality = Column(String,default='warm')
-  subscription_status = Column(String,nullable=True)
 
-  dog = relationship(
+  dog = relationship("Dog",
     back_populates="owner",
     uselist=False,
     cascade="all, delete-orphan"
   )
+  subscription = relationship(
+        "Subscription",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
 
 
 class ForgotPassword(Base):
