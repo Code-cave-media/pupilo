@@ -55,7 +55,6 @@ class _RemindersScreenState extends State<RemindersScreen> {
   // Method to show the pop-up dialog for adding a new reminder.
   Future<void> _showAddReminderDialog() async {
     final TextEditingController titleController = TextEditingController();
-    DateTime? selectedDate = DateTime.now();
     TimeOfDay? selectedTime = TimeOfDay.now();
 
     await showDialog(
@@ -75,33 +74,6 @@ class _RemindersScreenState extends State<RemindersScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Date:',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate ?? DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      );
-                      if (pickedDate != null) {
-                        setState(() {
-                          selectedDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: Text(selectedDate != null
-                        ? '${selectedDate!.month}/${selectedDate!.day}/${selectedDate!.year}'
-                        : 'Select Date'),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
                     'Time:',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -112,9 +84,12 @@ class _RemindersScreenState extends State<RemindersScreen> {
                         initialTime: selectedTime ?? TimeOfDay.now(),
                       );
                       if (pickedTime != null) {
-                        setState(() {
-                          selectedTime = pickedTime;
-                        });
+                        // We use a local state variable here as AlertDialog is a separate widget tree.
+                        selectedTime = pickedTime;
+                        // To update the Text widget in the dialog, we need to wrap the
+                        // builder in a StatefulBuilder. This is a common pattern for
+                        // state management within a dialog.
+                        (context as Element).markNeedsBuild();
                       }
                     },
                     child: Text(selectedTime != null
@@ -132,16 +107,15 @@ class _RemindersScreenState extends State<RemindersScreen> {
             ),
             TextButton(
               onPressed: () {
-                if (titleController.text.isNotEmpty &&
-                    selectedDate != null &&
-                    selectedTime != null) {
+                if (titleController.text.isNotEmpty && selectedTime != null) {
+                  final now = DateTime.now();
                   final newReminder = Reminder(
                     icon: Icons.access_alarm, // Default icon
                     title: titleController.text,
                     dateTime: DateTime(
-                      selectedDate!.year,
-                      selectedDate!.month,
-                      selectedDate!.day,
+                      now.year,
+                      now.month,
+                      now.day,
                       selectedTime!.hour,
                       selectedTime!.minute,
                     ),
@@ -175,7 +149,7 @@ class _RemindersScreenState extends State<RemindersScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.filter_list, color: Color(0xFF5582AC)),
+          icon: const Icon(Icons.history, color: Color(0xFF5582AC)),
           onPressed: () {},
         ),
         centerTitle: true,
