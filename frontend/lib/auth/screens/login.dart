@@ -113,12 +113,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 15),
-              SizedBox(
+              SizedBox(  
                 width: double.infinity,
                 child: Container(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Direct navigation to dashboard, auth removed
+                      // Direct navigation to ProgressiveScreen, auth removed
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (_) => const Dashboard()),

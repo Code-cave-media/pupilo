@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'features/screens/onboarding_screen.dart';
+import 'features/screens/dashboard_screen.dart';
 
 void main() {
   runApp(const Pupilo());
@@ -12,7 +12,7 @@ class Pupilo extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      home: Dashboard(),
     );
   }
 }
